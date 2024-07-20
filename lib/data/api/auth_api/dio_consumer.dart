@@ -1,5 +1,10 @@
+import 'dart:developer';
+import 'dart:ui';
+
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:path/path.dart';
 import 'package:tasky/data/api/auth_api/api_consumer.dart';
 import 'package:tasky/data/api/auth_api/api_interceptor.dart';
 import 'package:tasky/data/api/auth_api/end_points.dart';
@@ -12,13 +17,12 @@ class DioConsumer extends ApiConsumer {
     dio.options.baseUrl = EndPoint.baseUrl;
     dio.interceptors.add(ApiInterceptor());
     dio.interceptors.add(LogInterceptor(
-      request: true,
-      requestHeader: true,
-      requestBody: true,
-      responseHeader: true,
-      responseBody: true,
-      error: true,
-    ));
+        request: true,
+        requestHeader: true,
+        requestBody: true,
+        responseHeader: true,
+        responseBody: true,
+        error: true));
   }
 
   @override
@@ -51,6 +55,7 @@ class DioConsumer extends ApiConsumer {
       );
       return response.data;
     } on DioException catch (e) {
+      log(e.toString());
       handleDioExceptions(e);
     }
   }
@@ -78,16 +83,17 @@ class DioConsumer extends ApiConsumer {
     bool isFormData = false,
   }) async {
     try {
-
+      log("11111111");
       final response = await dio.post(
         path,
         data: isFormData ? FormData.fromMap(data) : data,
         queryParameters: queryParameters,
       );
-
-      return response.data;
+      log("2222222");
+      return (response.data);
     } on DioException catch (e) {
-      handleDioExceptions(e);
+      log("");
+      rethrow;
     }
   }
 }

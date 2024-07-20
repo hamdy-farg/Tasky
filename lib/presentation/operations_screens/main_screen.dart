@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<TodoCubit>().getTodos();
+    context.read<TodoCubit>().displayTodos();
 
     return Scaffold(
       body: BlocConsumer<AuthCubit, AuthState>(
@@ -60,12 +60,13 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         builder: (context, state) {
           return state is LogoutLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : SafeArea(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -82,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Screens.profile_screen,
                                     );
                                   },
-                                  icon: Icon(IconlyLight.profile),
+                                  icon: const Icon(IconlyLight.profile),
                                   iconSize: 30,
                                 ),
                                 IconButton(
@@ -111,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           height: daimentions!.Height10,
                         ),
-                        Container(
+                        SizedBox(
                             height: daimentions!.Height40,
                             child: ListView.builder(
                               itemCount: task_category.length,
@@ -126,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   );
                                 }
                                 return Container(
-                                  margin: EdgeInsets.only(left: 5),
+                                  margin: const EdgeInsets.only(left: 5),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
@@ -134,7 +135,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     borderRadius: BorderRadius.circular(20),
                                     color: selected_item == index
                                         ? ColorsManeger.purble
-                                        : Color.fromRGBO(240, 236, 255, 1),
+                                        : const Color.fromRGBO(
+                                            240, 236, 255, 1),
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(20),
                                       onTap: () {
@@ -143,9 +145,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         });
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 15, vertical: 5),
-                                        margin: EdgeInsets.only(left: 5),
+                                        margin: const EdgeInsets.only(left: 5),
                                         child: Center(
                                           child: Text(
                                             task_category[index],
@@ -182,12 +184,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 }
                               }
                               return state is TodosLoading
-                                  ? Center(
+                                  ? const Center(
                                       child:
                                           CircularProgressIndicator.adaptive(),
                                     )
                                   : state is TodosSuccess
-                                      ? Container(
+                                      ? SizedBox(
                                           height: daimentions!.height / 1.40,
                                           child: ListView.builder(
                                             scrollDirection: Axis.vertical,
@@ -221,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       width:
                                                           daimentions!.Width5,
                                                     ),
-                                                    Container(
+                                                    SizedBox(
                                                       width:
                                                           daimentions!.width /
                                                               3.99,
@@ -260,12 +262,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   ),
                                                                 ),
                                                                 Container(
-                                                                  padding: EdgeInsets
+                                                                  padding: const EdgeInsets
                                                                       .symmetric(
-                                                                          horizontal:
-                                                                              7,
-                                                                          vertical:
-                                                                              1),
+                                                                      horizontal:
+                                                                          7,
+                                                                      vertical:
+                                                                          1),
                                                                   decoration: BoxDecoration(
                                                                       borderRadius:
                                                                           BorderRadius.circular(
@@ -355,7 +357,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         ],
                                                       ),
                                                     ),
-                                                    Container(
+                                                    SizedBox(
                                                       height: 100,
                                                       child: Column(
                                                           mainAxisAlignment:
@@ -369,8 +371,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       Screens
                                                                           .task_details_screen);
                                                                 },
-                                                                icon: Icon(Icons
-                                                                    .menu_sharp)),
+                                                                icon: const Icon(
+                                                                    Icons
+                                                                        .menu_sharp)),
                                                           ]),
                                                     )
                                                   ],
@@ -398,7 +401,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               width: daimentions!.height / 15,
               height: daimentions!.height / 15,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
               ),
               child: Material(
@@ -427,7 +430,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               width: daimentions!.height / 12,
               height: daimentions!.height / 12,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
               ),
               child: Material(
@@ -438,7 +441,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     Navigator.of(context).pushNamed(Screens.add_task_screen);
                   },
-                  child: Center(
+                  child: const Center(
                     child: Icon(
                       Icons.add,
                       size: 30,

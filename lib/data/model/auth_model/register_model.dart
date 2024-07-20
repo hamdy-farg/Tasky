@@ -98,30 +98,8 @@ class RegisterModel {
     );
   }
 
-  String toJson() => json.encode(toMap());
-
   factory RegisterModel.fromJson(String source) =>
       RegisterModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  bool operator ==(covariant RegisterModel other) {
-    if (identical(this, other)) return true;
-
-    return other.phone == phone &&
-        other.password == password &&
-        other.display_name == display_name &&
-        other.address == address &&
-        other.level == level &&
-        other.experienceYears == experienceYears;
-  }
-
-  @override
-  int get hashCode {
-    return phone.hashCode ^
-        password.hashCode ^
-        display_name.hashCode ^
-        address.hashCode ^
-        level.hashCode ^
-        experienceYears.hashCode;
-  }
 }
+
+

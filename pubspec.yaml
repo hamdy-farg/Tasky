@@ -45,6 +45,8 @@ dependencies:
   shared_preferences: ^2.2.3
   dartz: ^0.10.1
   image_picker: ^1.1.2
+  sqflite: ^2.3.3+1
+  path: ^1.9.0
 flutter_native_splash:
   color: "#5F33E1"
   image: assets/images/tasky.png

@@ -17,49 +17,21 @@ import 'bussiness_logic/operation/add_todo/cubit/add_todo_cubit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AuthRepo().check();
-  String? is_login;
-  runApp(MyApp(
-    app_router: AppRouter(),
-    is_login: is_login,
-  ));
+  String? isLogin;
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  String? is_login;
-  final AppRouter app_router;
-  MyApp({
-    required this.is_login,
+  const MyApp({
     super.key,
-    required this.app_router,
   });
 
   @override
   Widget build(BuildContext context) {
-    is_login = AuthRepo.refresh_token;
+    // is_login = AuthRepo.refresh_token;
     return ScreenUtilInit(
       child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) =>
-                AuthCubit(AuthRepo(api: DioConsumer(dio: Dio()))),
-            child: Container(),
-          ),
-          BlocProvider(
-            create: (context) =>
-                ProfileCubit(GetRepo(api: DioConsumer(dio: Dio()))),
-            child: Container(),
-          ),
-          BlocProvider(
-            create: (context) =>
-                TodoCubit(taskRepo: TaskRepo(api: DioConsumer(dio: Dio()))),
-            child: Container(),
-          ),
-          BlocProvider(
-            create: (context) =>
-                AddTodoCubit(TaskRepo(api: DioConsumer(dio: Dio()))),
-            child: Container(),
-          )
-        ],
+        providers: [...AppRouter.allBlocProviders(context)],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
@@ -67,9 +39,9 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          initialRoute:
-              is_login == null ? Screens.entery_screen : Screens.home_screen,
-          onGenerateRoute: app_router.generateRoute,
+          // initialRoute:
+          // is_login == null ? Screens.entery_screen : Screens.home_screen,
+          onGenerateRoute: AppRouter.generateRoute,
         ),
       ),
     );

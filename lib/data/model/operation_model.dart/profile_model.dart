@@ -7,7 +7,7 @@ class ProfileModelResponse {
   String id;
   String displayName;
   String username;
-  List<dynamic> roles;
+  List<dynamic> rules;
   bool active;
   int experienceYears;
   String address;
@@ -18,7 +18,7 @@ class ProfileModelResponse {
     required this.id,
     required this.displayName,
     required this.username,
-    required this.roles,
+    required this.rules,
     required this.active,
     required this.experienceYears,
     required this.address,
@@ -32,7 +32,7 @@ class ProfileModelResponse {
       '_id': id,
       'displayName': displayName,
       'username': username,
-      'roles': roles,
+      'rules': rules,
       'active': active,
       'experienceYears': experienceYears,
       'address': address,
@@ -47,7 +47,7 @@ class ProfileModelResponse {
       id: map['_id'] as String,
       displayName: map['displayName'] as String,
       username: map['username'] as String,
-      roles: List<String>.from((map['roles'] as List<dynamic>)),
+      rules: List<String>.from((map['roles'] as List<dynamic>)),
       active: map['active'] as bool,
       experienceYears: map['experienceYears'] as int,
       address: map['address'] as String,
@@ -59,6 +59,6 @@ class ProfileModelResponse {
 
   @override
   String toString() {
-    return 'ProfileModelResponse(_id: $id, displayName: $displayName, username: $username, roles: $roles, active: $active, experienceYears: $experienceYears, address: $address, level: $level, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'ProfileModelResponse(_id: $id, displayName: $displayName, username: $username, rules: $rules, active: $active, experienceYears: $experienceYears, address: $address, level: $level, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 }

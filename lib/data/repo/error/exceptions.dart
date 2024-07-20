@@ -76,7 +76,9 @@ void handleDioExceptions(DioException e) {
         case 504: // Server exception
           throw ServerException(
               errorModel: ErrorModel.fromMap(e.response!.data));
+        case 399: // internet error
+          throw ServerException(
+              errorModel: ErrorModel.fromMap(e.response!.data));
       }
   }
 }
-
