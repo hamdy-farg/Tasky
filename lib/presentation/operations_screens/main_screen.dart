@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tasky/bussiness_logic/auth/cubit/auth_cubit.dart';
+import 'package:tasky/bussiness_logic/auth/refresh_token_cubit.dart/refresh_token_cubit.dart';
+import 'package:tasky/bussiness_logic/auth/refresh_token_cubit.dart/refresh_token_state.dart';
 import 'package:tasky/bussiness_logic/operation/add_todo/cubit/add_todo_cubit.dart';
 import 'package:tasky/constants/Screens.dart';
 import 'package:tasky/constants/colors/colors.dart';
@@ -42,13 +44,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<TodoCubit>().displayTodos();
+    context.read<TodoCubit>().getTodos();
 
     return Scaffold(
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is LogoutSuccess) {
-            AuthRepo.refresh_token = null;
             Navigator.pushReplacementNamed(context, Screens.login_screen);
           } else if (state is Logoutfailure) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -168,8 +169,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: daimentions!.Height10,
                         ),
                         RefreshIndicator(
-                          onRefresh: () {
-                            return context.read<TodoCubit>().getTodos();
+                          onRefresh: () async {
+
+                            if (context.read<AccessTokenCubit>().state
+                                is AccessTokenSuccess) {
+                              return await context.read<TodoCubit>().getTodos();
+                            } else {
+                              return await context
+                                  .read<AccessTokenCubit>()
+                                  .getAcessToken();
+                            }
                           },
                           child: BlocBuilder<TodoCubit, TodosState>(
                             builder: (context, state) {

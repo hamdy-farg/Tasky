@@ -31,9 +31,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   //phone input related
   LayerLink layerLink = LayerLink();
-  final bool _shouldFormat = true;
-  final bool _showFlagInInput = true;
-  final bool _showArrow = true;
+  bool _shouldFormat = true;
+  bool _showFlagInInput = true;
+  bool _showArrow = true;
   late List<CountrySelectorNavigator> navigators;
   late CountrySelectorNavigator selectorNavigator;
 
@@ -57,7 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     // intialize phone controllers
     phone_controller =
-        PhoneController(const PhoneNumber(isoCode: IsoCode.EG, nsn: "1"));
+        PhoneController(PhoneNumber(isoCode: IsoCode.EG, nsn: "1"));
     navigators = <CountrySelectorNavigator>[
       const CountrySelectorNavigator.searchDelegate(),
       const CountrySelectorNavigator.dialog(),
@@ -97,6 +97,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
+          print("state is : $state");
           if (state is registerfailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -104,8 +105,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             );
           } else if (state is registerSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text("your account is successful created")));
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("your account is successful created")));
             Navigator.pushReplacementNamed(context, Screens.home_screen);
           }
           // TODO: implement listener
@@ -150,7 +151,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             if (value!.isEmpty) {
                               return ("field can not be empty");
                             }
-                            return null;
                           },
                         ),
 
@@ -167,7 +167,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           showFlagInInput: _showFlagInInput,
                           decoration: InputDecoration(
                               labelText: 'Phone number',
-                              contentPadding: const EdgeInsets.symmetric(
+                              contentPadding: EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 0),
                               border: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -190,24 +190,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             if (value!.isEmpty) {
                               return ("field can not be empty");
                             }
-                            return null;
                           },
                         ),
 
                         /// dorp down meny
                         DropdownButtonFormField<String>(
                           value: dropdownvalue,
-                          hint: const Text('choose experiance Level'),
-                          onChanged: (String? newValue) {
+                          hint: Text('choose experiance Level'),
+                          onChanged: (String? new_value) {
                             setState(() {
-                              dropdownvalue = newValue;
+                              dropdownvalue = new_value;
                             });
                           },
                           validator: (value) {
                             if (value == "1") {
                               return "you have to choose your exprience level";
                             }
-                            return null;
                           },
                           decoration: const InputDecoration(
                             contentPadding: EdgeInsets.symmetric(
@@ -216,26 +214,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 borderSide: BorderSide(
                                     color: Color.fromRGBO(106, 124, 110, 1))),
                           ),
-                          items: const [
+                          items: [
                             DropdownMenuItem(
-                              value: "1",
                               child: Text("Choose experience Level"),
+                              value: "1",
                             ),
                             DropdownMenuItem(
-                              value: "fresh",
                               child: Text("fresh"),
+                              value: "fresh",
                             ),
                             DropdownMenuItem(
-                              value: "junior",
                               child: Text("junior"),
+                              value: "junior",
                             ),
                             DropdownMenuItem(
-                              value: "midLevel",
                               child: Text("midLevel"),
+                              value: "midLevel",
                             ),
                             DropdownMenuItem(
-                              value: "senior",
                               child: Text("senior"),
+                              value: "senior",
                             ),
                           ],
                         ),
@@ -251,7 +249,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             if (value!.isEmpty) {
                               return ("field can not be empty");
                             }
-                            return null;
                           },
                         ),
                         // sized box to make space between widgets
@@ -263,19 +260,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           text_edting_controller: password_controller,
                           suffixIcon: IconButton(
                               onPressed: () {},
-                              icon: const Icon(Icons.remove_red_eye_rounded)),
+                              icon: Icon(Icons.remove_red_eye_rounded)),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return ("field can not be empty");
                             }
-                            return null;
                           },
                         ),
                       ],
                     ),
                   ),
                   state is registerLoading
-                      ? const Center(child: CircularProgressIndicator())
+                      ? Center(child: CircularProgressIndicator())
                       : wid_button_widget(
                           daimentions: daimentions,
                           text: "register",
@@ -285,7 +281,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             if (form_key!.currentState!.validate()) {
                               String phone =
                                   "+${phone_controller!.value!.countryCode.toString() + phone_controller!.value!.nsn.toString()}";
-                              RegisterModel registerModel = RegisterModel(
+                              RegisterModel register_model = RegisterModel(
                                 phone,
                                 password_controller!.text,
                                 user_name_controller!.text,
@@ -296,7 +292,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                               context
                                   .read<AuthCubit>()
-                                  .register(register_model: registerModel);
+                                  .register(register_model: register_model);
                             }
                           },
                         ),

@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:tasky/data/model/error_model.dart';
 
@@ -42,6 +44,7 @@ void handleDioExceptions(DioException e) {
       ));
     // TODO: Handle this case.
     case DioExceptionType.connectionError:
+      log("how are you ${e.response!.data}");
       throw ServerException(
           errorModel: ErrorModel.fromMap(
         e.response!.data,
@@ -74,9 +77,6 @@ void handleDioExceptions(DioException e) {
           throw ServerException(
               errorModel: ErrorModel.fromMap(e.response!.data));
         case 504: // Server exception
-          throw ServerException(
-              errorModel: ErrorModel.fromMap(e.response!.data));
-        case 399: // internet error
           throw ServerException(
               errorModel: ErrorModel.fromMap(e.response!.data));
       }

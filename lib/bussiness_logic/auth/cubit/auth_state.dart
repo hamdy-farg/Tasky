@@ -7,9 +7,7 @@ sealed class AuthState {}
 // operation related to sign in
 final class AuthInitial extends AuthState {}
 
-final class SigninSuccess extends AuthState {
-  
-}
+final class SigninSuccess extends AuthState {}
 
 final class SigninLoading extends AuthState {}
 

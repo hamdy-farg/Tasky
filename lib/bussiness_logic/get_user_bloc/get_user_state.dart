@@ -1,7 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:developer';
+
 class LoginState {
   final String cloumn_id;
+  final String coloumn_phone;
+  final String coloumn_address;
+
   final String column_user_name;
   final String coloumn_rules;
   final int coloumn_active;
@@ -13,24 +18,28 @@ class LoginState {
   final String coloumn_access_token;
   final String coloumn_refresh_token;
   LoginState({
-    this.cloumn_id = '',
-    this.column_user_name = '',
-    this.coloumn_rules = '',
+    this.coloumn_address = "",
+    this.cloumn_id = "",
+    this.coloumn_phone = "",
+    this.column_user_name = "",
+    this.coloumn_rules = "",
     this.coloumn_active = 0,
-    this.coloumn_experience_year = '',
-    this.coloumn_level = '',
-    this.coloumn_created_at = '',
-    this.coloumn_updated_at = '',
+    this.coloumn_experience_year = "",
+    this.coloumn_level = "",
+    this.coloumn_created_at = "",
+    this.coloumn_updated_at = "",
     this.coloumn_version = 0,
-    this.coloumn_access_token = '',
-    this.coloumn_refresh_token = '',
+    this.coloumn_access_token = "",
+    this.coloumn_refresh_token = "",
   });
 
   LoginState copyWith({
     String? cloumn_id,
+    String? coloumn_phone,
     String? column_user_name,
     String? coloumn_rules,
     int? coloumn_active,
+    String? coloumn_address,
     String? coloumn_experience_year,
     String? coloumn_level,
     String? coloumn_created_at,
@@ -39,27 +48,30 @@ class LoginState {
     String? coloumn_access_token,
     String? coloumn_refresh_token,
   }) {
+    log("$cloumn_id $coloumn_phone $column_user_name $coloumn_rules $coloumn_active $coloumn_address $coloumn_experience_year $coloumn_level $coloumn_created_at $coloumn_updated_at $coloumn_version $coloumn_access_token $coloumn_refresh_token");
     return LoginState(
-      cloumn_id: cloumn_id ?? this.cloumn_id,
-      column_user_name: column_user_name ?? this.column_user_name,
-      coloumn_rules: coloumn_rules ?? this.coloumn_rules,
-      coloumn_active: coloumn_active ?? this.coloumn_active,
-      coloumn_experience_year:
-          coloumn_experience_year ?? this.coloumn_experience_year,
-      coloumn_level: coloumn_level ?? this.coloumn_level,
-      coloumn_created_at: coloumn_created_at ?? this.coloumn_created_at,
-      coloumn_updated_at: coloumn_updated_at ?? this.coloumn_updated_at,
-      coloumn_version: coloumn_version ?? this.coloumn_version,
-      coloumn_access_token: coloumn_access_token ?? this.coloumn_access_token,
-      coloumn_refresh_token:
-          coloumn_refresh_token ?? this.coloumn_refresh_token,
-    );
+        cloumn_id: cloumn_id ?? this.cloumn_id,
+        column_user_name: column_user_name ?? this.column_user_name,
+        coloumn_rules: coloumn_rules ?? this.coloumn_rules,
+        coloumn_active: coloumn_active ?? this.coloumn_active,
+        coloumn_phone: coloumn_phone ?? this.coloumn_phone,
+        coloumn_experience_year:
+            coloumn_experience_year ?? this.coloumn_experience_year,
+        coloumn_address: coloumn_address ?? this.coloumn_address,
+        coloumn_level: coloumn_level ?? this.coloumn_level,
+        coloumn_created_at: coloumn_created_at ?? this.coloumn_created_at,
+        coloumn_updated_at: coloumn_updated_at ?? this.coloumn_updated_at,
+        coloumn_version: coloumn_version ?? this.coloumn_version,
+        coloumn_access_token: coloumn_access_token ?? this.coloumn_access_token,
+        coloumn_refresh_token:
+            coloumn_refresh_token ?? this.coloumn_refresh_token);
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'cloumn_id': cloumn_id,
       'column_user_name': column_user_name,
+      'column_phone': coloumn_phone,
       'coloumn_rules': coloumn_rules,
       'coloumn_active': coloumn_active,
       'coloumn_experience_year': coloumn_experience_year,
@@ -69,12 +81,15 @@ class LoginState {
       'coloumn_version': coloumn_version,
       'coloumn_access_token': coloumn_access_token,
       'coloumn_refresh_token': coloumn_refresh_token,
+      'coloumn_address': coloumn_refresh_token,
     };
   }
 
   factory LoginState.fromMap(Map<String, dynamic> map) {
     return LoginState(
       cloumn_id: map['cloumn_id'] as String,
+      coloumn_address: map['coloumn_address'] as String,
+      coloumn_phone: map['column_phone'] as String,
       column_user_name: map['column_user_name'] as String,
       coloumn_rules: map['coloumn_rules'] as String,
       coloumn_active: map['coloumn_active'] as int,

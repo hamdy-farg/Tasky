@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-import 'dart:developer';
+
+import 'package:tasky/constants/api_keys.dart';
+import 'package:tasky/data/api/auth_api/end_points.dart';
 
 class LoginResponseModel {
   String id;
@@ -21,11 +23,10 @@ class LoginResponseModel {
   }
 
   factory LoginResponseModel.fromMap(Map<String, dynamic> map) {
-    log("from map");
     return LoginResponseModel(
-      id: map['_id'] as String,
-      access_token: map['access_token'] as String,
-      refresh_token: map['refresh_token'] as String,
+      id: map[ApiKey.id] as String,
+      access_token: map[ApiKey.access_token] as String,
+      refresh_token: map[ApiKey.refresh_token] as String,
     );
   }
 

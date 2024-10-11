@@ -25,9 +25,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Daimentions? daimentions;
 
   LayerLink layerLink = LayerLink();
-  final bool _shouldFormat = true;
-  final bool _showFlagInInput = true;
-  final bool _showArrow = true;
+  bool _shouldFormat = true;
+  bool _showFlagInInput = true;
+  bool _showArrow = true;
   late List<CountrySelectorNavigator> navigators;
   late CountrySelectorNavigator selectorNavigator;
   GlobalKey<FormState>? form_key;
@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
     password_controller = TextEditingController();
     daimentions = Daimentions(context: context);
     phone_controller =
-        PhoneController(const PhoneNumber(isoCode: IsoCode.EG, nsn: "1"));
+        PhoneController(PhoneNumber(isoCode: IsoCode.EG, nsn: "1"));
     navigators = <CountrySelectorNavigator>[
       const CountrySelectorNavigator.searchDelegate(),
       const CountrySelectorNavigator.dialog(),
@@ -127,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             showFlagInInput: _showFlagInInput,
                             decoration: InputDecoration(
                                 labelText: 'Phone number',
-                                contentPadding: const EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 0, horizontal: 10),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -144,35 +144,37 @@ class _LoginScreenState extends State<LoginScreen> {
                             text_edting_controller: password_controller,
                             suffixIcon: IconButton(
                               onPressed: () {},
-                              icon: const Icon(Icons.remove_red_eye_rounded),
+                              icon: Icon(Icons.remove_red_eye_rounded),
                             ),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return ('field can not be empty');
                               }
-                              return null;
                             },
                           )
                         ],
                       ),
                     ),
                     state is SigninLoading
-                        ? const Center(child: CircularProgressIndicator())
+                        ? Center
+                        (child: CircularProgressIndicator())
                         : wid_button_widget(
                             daimentions: daimentions,
                             text: "Sign In",
                             is_icon: false,
                             on_tap: () {
-                              //
-                              ////
+                              // print(
+                              //     );
+
                               if (form_key!.currentState!.validate()) {
                                 String phone =
                                     "+${phone_controller!.value!.countryCode.toString() + phone_controller!.value!.nsn.toString()}";
-                                LoginModel loginModel = LoginModel(
+                                LoginModel login_model = LoginModel(
                                     phone: phone,
                                     password: password_controller!.text);
-                                context.read<AuthCubit>().login(
-                                    login_model: loginModel, context: context);
+                                context
+                                    .read<AuthCubit>()
+                                    .login(login_model: login_model);
                               }
                             },
                           ),
