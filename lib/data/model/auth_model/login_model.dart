@@ -4,7 +4,9 @@ import 'dart:convert';
 import 'package:tasky/constants/api_keys.dart';
 import 'package:tasky/data/api/auth_api/end_points.dart';
 
-class LoginResponseModel {
+class Model {}
+
+class LoginResponseModel extends Model {
   String id;
   String access_token;
   String refresh_token;

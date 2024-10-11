@@ -7,9 +7,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:tasky/cache/cache_helper.dart';
 import 'package:tasky/constants/api_keys.dart';
+import 'package:tasky/constants/db_handler_strings.dart';
 import 'package:tasky/data/api/auth_api/api_consumer.dart';
+import 'package:tasky/data/api/auth_api/dio_consumer.dart';
 import 'package:tasky/data/api/auth_api/end_points.dart';
 import 'package:tasky/data/api/db/db_handler.dart';
+import 'package:tasky/data/api/db/db_user_handler.dart';
 import 'package:tasky/data/model/auth_model/login_model.dart';
 import 'package:tasky/data/model/auth_model/refresh_token_and_get_profile.dart';
 import 'package:tasky/data/model/auth_model/register_model.dart';
@@ -20,30 +23,17 @@ import 'package:tasky/data/repo/error/exceptions.dart';
 import 'package:dartz/dartz.dart';
 
 class AuthRepo {
-  final ApiConsumer? api;
+  final ApiConsumer api;
   AuthRepo({
-    this.api,
+    required this.api,
   });
-
-  static String? refresh_token;
-  Future<String?> check() async {
-    try {
-      await CacheHelper().init();
-      refresh_token =
-          await GetFromDB().getUser()[DbHandlerStrings.coloumn_refresh_token];
-    } catch (e) {
-      refresh_token = null;
-      return null;
-    }
-    return null;
-  }
 
   Future<Either<String, dynamic>> register(
       {required RegisterModel register_model}) async {
     // to send the request with user data
     try {
       final reponse =
-          await api!.post(EndPoint.register, "", isFormData: false, data: {
+          await api.post(EndPoint.register, "", isFormData: false, data: {
         ApiKey.phone: register_model.phone,
         ApiKey.password: register_model.password,
         ApiKey.displayName: register_model.display_name,
@@ -53,13 +43,7 @@ class AuthRepo {
       });
 
       final registerResponse = RegisterResponseModel.fromMap(reponse);
-      // save token and refresh token in the cach helper
-      // CacheHelper().saveData(
-      //     key: ApiKey.access_token, value: registerResponse.access_token);
-      // CacheHelper().saveData(
-      //     key: ApiKey.refresh_token, value: registerResponse.refresh_token);
-      // CacheHelper().saveData(key: ApiKey.id, value: registerResponse.id);
-      // register response
+
       return Right(registerResponse);
     } on ServerException catch (e) {
       print(e.errorModel.message);
@@ -73,21 +57,14 @@ class AuthRepo {
     try {
       log("first look");
       final response =
-          await api!.post(EndPoint.login, " ", isFormData: false, data: {
+          await api.post(EndPoint.login, " ", isFormData: false, data: {
         ApiKey.phone: login_model.phone,
         ApiKey.password: login_model.password,
       });
       LoginResponseModel loginResponse = LoginResponseModel.fromMap(response);
-      log("succeful");
-      await InsertIntoDB().insertUser(response: loginResponse);
-
-      // save token and refresh token in the cach helper
-      // CacheHelper().saveData(
-      //     key: ApiKey.access_token, value: login_response.access_token);
-      // CacheHelper().saveData(
-      //     key: ApiKey.refresh_token, value: login_response.refresh_token);
-      // CacheHelper().saveData(key: ApiKey.id, value: login_response.id);
-
+      log("succeful $loginResponse");
+      await DbUser().insert(model: loginResponse);
+      log("insterted");
       return right(loginResponse);
     } catch (e) {
       log("responce is $e},");
@@ -107,18 +84,14 @@ class AuthRepo {
       if (refreshToken.isRight()) {
         RegExp regExp = RegExp(r'access_token:\s*(\S+)(?=\s*\})');
         Match? match = regExp.firstMatch(refreshToken.toString());
-        var response = await api!.post(EndPoint.logout, match!.group(1)!);
+        var response = await api.post(EndPoint.logout, match!.group(1)!);
         logoutResponse = LogoutModel.fromMap(response);
       } else {
         log("$refreshToken ");
         throw Exception("there is an error wait for new update");
       }
 
-      await DeleteFromDb().deletUser();
-      // clear all data in cash
-      // CacheHelper().clearData(key: ApiKey.access_token);
-      // CacheHelper().clearData(key: ApiKey.refresh_token);
-      // CacheHelper().clearData(key: ApiKey.id);
+      await DbUser().delete();
 
       return right(logoutResponse);
     } catch (e) {
@@ -132,20 +105,20 @@ class AuthRepo {
 // postcondtion : the result Either error msg or responce with accesstoken
   Future<Either<String, dynamic>> getAccessToken() async {
     try {
-      var refreshToken = await GetFromDB().getUser();
-      log("fuck at all $refreshToken");
+      var user = await DbUser().get();
+      log("fuck at all $user");
 
-      var response = await api!.get(
+      var response = await DioConsumer(dio: Dio()).get(
         EndPoint.refresh,
         "",
         queryParameters: {
-          ApiKey.token: refreshToken[DbHandlerStrings.coloumn_refresh_token]
+          ApiKey.token: user[DbHandlerStrings.coloumn_refresh_token]
         },
       );
       Map<String, dynamic> accesstoken = {
         DbHandlerStrings.coloumn_access_token: response[ApiKey.access_token],
       };
-      await UpdateDb().updateUser(accesstoken);
+      await DbUser().update(map: accesstoken);
       return right(accesstoken);
     } catch (e) {
       log("typess $e");

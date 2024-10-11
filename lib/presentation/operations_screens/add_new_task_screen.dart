@@ -10,7 +10,9 @@ import 'package:tasky/bussiness_logic/operation/todos/cubit/todo_cubit.dart';
 import 'package:tasky/constants/colors/colors.dart';
 import 'package:tasky/constants/daimentions.dart';
 import 'package:tasky/constants/strings.dart';
+import 'package:tasky/constants/variable_data.dart';
 import 'package:tasky/data/model/operation_model.dart/task_model.dart';
+import 'package:tasky/data/repo/utils/utils.dart';
 import 'package:tasky/presentation/custom_widgets/bit_text_widget.dart';
 import 'package:tasky/presentation/custom_widgets/description_text_widget.dart';
 import 'package:tasky/presentation/custom_widgets/drop_down_menu.dart';
@@ -25,14 +27,6 @@ class AddNewTaskScreen extends StatefulWidget {
 }
 
 class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
-  Daimentions? daimentions;
-  XFile image = XFile("path");
-  List<String> priority = [
-    "choose your priority",
-    "low",
-    "medium",
-    "high",
-  ];
   // declare text editing controllers
   TextEditingController? date_controller;
   TextEditingController? title_controller;
@@ -40,17 +34,6 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
   GlobalKey<FormState>? form_key;
 
   // function to select date
-  Future<void> _selectedData() async {
-    DateTime? _picked = await showDatePicker(
-      context: context,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-      initialDate: DateTime.now(),
-    );
-    if (_picked != null) {
-      date_controller!.text = _picked.toString().split(" ")[0];
-    }
-  }
 
   @override
   void initState() {
@@ -59,8 +42,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
     title_controller = TextEditingController();
     description_controller = TextEditingController();
     //initailize daimentions
-    daimentions = Daimentions(context: context);
-
+    Data.daimentions = Daimentions(context: context);
     // form key
     form_key = GlobalKey();
     // TODO: implement initState
@@ -76,8 +58,6 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
     // TODO: implement dispose
     super.dispose();
   }
-
-  String priority_value = "choose your priority";
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +84,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: 10,
             vertical: 40,
           ),
@@ -117,18 +97,18 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                 if (state is AddTodoSuccess) {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("successfully added")));
+                      const SnackBar(content: Text("successfully added")));
                 }
                 if (state is AddTodoFailure) {
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text(state.error_message)));
                 }
-                if (state is imageLoaded) image = state.image;
+                if (state is imageLoaded) Data.image = state.image;
                 // TODO: implement listener
               },
               builder: (context, state) {
                 return state is AddTodoloading
-                    ? Center(
+                    ? const Center(
                         child: CircularProgressIndicator(),
                       )
                     : Column(
@@ -137,13 +117,13 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                           DottedBorder(
                               strokeWidth: 1,
                               borderType: BorderType.RRect,
-                              radius: Radius.circular(10),
-                              dashPattern: [3, 3],
+                              radius: const Radius.circular(10),
+                              dashPattern: const [3, 3],
                               color: ColorsManeger.purble,
                               // impelement three layer to get perfect onpress container
-                              child: Container(
+                              child: SizedBox(
                                 width: double.infinity,
-                                height: daimentions!.height / 4,
+                                height: Data.daimentions!.height / 4,
                                 // material to make the border of thee click rounded and put the color
                                 child: Material(
                                     borderRadius: BorderRadius.circular(10),
@@ -163,7 +143,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                                           Center(
                                         // if image loading make circular indicator if it not go to another condition
                                         child: state is imageLoading
-                                            ? CircularProgressIndicator()
+                                            ? const CircularProgressIndicator()
                                             : (state is! imageLoaded)
                                                 ? Row(
                                                     mainAxisAlignment:
@@ -185,8 +165,9 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                                                   )
                                                 // to display the image if it exist
                                                 : Container(
-                                                    height:
-                                                        daimentions!.height / 4,
+                                                    height: Data.daimentions!
+                                                            .height /
+                                                        4,
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
                                                         image: FileImage(File(
@@ -200,7 +181,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
 
                           // sized box between widgets
                           SizedBox(
-                            height: daimentions!.Height20,
+                            height: Data.daimentions!.Height20,
                           ),
 
                           // to but title of the text form field
@@ -211,7 +192,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
 
                           // sized box between widgets
                           SizedBox(
-                            height: daimentions!.Height5,
+                            height: Data.daimentions!.Height5,
                           ),
 
                           // text form field to take data from user
@@ -222,6 +203,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                               if (value!.isEmpty) {
                                 return ("field can not be empty");
                               }
+                              return null;
                             },
                           ),
 
@@ -233,7 +215,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
 
                           //sized box between widgets
                           SizedBox(
-                            height: daimentions!.Height5,
+                            height: Data.daimentions!.Height5,
                           ),
 
                           // text form field to take data from user
@@ -245,82 +227,20 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                               if (value!.isEmpty) {
                                 return ("field can not be empty");
                               }
+                              return null;
                             },
                           ),
 
                           // drop down menu to choose your priority
-                          DropdownButtonFormField<String>(
-                              value: priority_value,
-                              icon: Visibility(
-                                visible: true,
-                                child: Container(
-                                  height: 15,
-                                  width: 15,
-                                  child: Image(
-                                    image: AssetImage(
-                                        ImagesManegar.down_arrow_icon),
-                                  ),
-                                ),
-                              ),
-                              iconSize: 24,
-                              elevation: 16,
-                              style: const TextStyle(
-                                color: Colors.deepPurple,
-                              ),
-                              decoration: const InputDecoration(
-                                  filled: true,
-                                  fillColor: Color.fromRGBO(240, 236, 255, 1),
-                                  contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 15,
-                                    vertical: 0,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  )),
-                              onChanged: (String? newValue) {
-                                priority_value = newValue!;
-                                print("ppppppppppppp ${priority_value}");
-                              },
-                              validator: (value) {
-                                if (value == "choose your priority")
-                                  return ("choose your priority");
-                              },
-                              items: priority.map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Row(
-                                      children: [
-                                        true
-                                            ? priority_value == value
-                                                ? Icon(
-                                                    Icons.flag_outlined,
-                                                    color: Colors.deepPurple,
-                                                  )
-                                                : Container()
-                                            : Container(),
-                                        Text(
-                                          value,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ));
-                              }).toList()),
+                          dropDownButtom(
+                            dataValue: Data.priority_value,
+                            list: Data.priority,
+                            holder: Data.priority_holder,
+                          ),
 
                           // sized box between widgets
                           SizedBox(
-                            height: daimentions!.Height10,
+                            height: Data.daimentions!.Height10,
                           ),
 
                           // to but title of the text form field
@@ -332,7 +252,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
 
                           // sized box between widgets
                           SizedBox(
-                            height: daimentions!.Height5,
+                            height: Data.daimentions!.Height5,
                           ),
 
                           // text form field to take data from user
@@ -340,8 +260,9 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                             text_edting_controller: date_controller,
                             hint_text: "choose due date...",
                             suffixIcon: IconButton(
-                              onPressed: () {
-                                _selectedData();
+                              onPressed: () async {
+                                date_controller!.text =
+                                    await Utils().selectedData(context);
                               },
                               icon: Icon(
                                 Icons.calendar_month,
@@ -353,26 +274,25 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                               if (value!.isEmpty) {
                                 return ("field can not be empty");
                               }
+                              return null;
                             },
                           ),
 
                           // wid button to submit the data
                           wid_button_widget(
                             on_tap: () {
-                              print("sssssssssssss ${priority_value}");
-
                               if (form_key!.currentState!.validate()) {
-                                RequistTaskModel requist_task_model =
+                                RequistTaskModel requistTaskModel =
                                     RequistTaskModel(
-                                        image: image.path,
+                                        image: Data.image.path,
                                         title: title_controller!.text,
                                         desc: description_controller!.text,
-                                        priority: priority_value,
+                                        priority: Data.priority_value,
                                         dueDate: date_controller!.text);
-                                print(requist_task_model);
+                                print(requistTaskModel);
 
                                 context.read<AddTodoCubit>().addTodo(
-                                    requist_task_model: requist_task_model);
+                                    requist_task_model: requistTaskModel);
                               }
                             },
                             text: "Add task",
@@ -387,4 +307,75 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
       ),
     );
   }
+}
+
+DropdownButtonFormField<String> dropDownButtom({
+  required List<String> list,
+  required String dataValue,
+  required String holder,
+}) {
+  return DropdownButtonFormField<String>(
+      value: dataValue,
+      icon: Visibility(
+        visible: true,
+        child: SizedBox(
+          height: 15,
+          width: 15,
+          child: Image(
+            image: AssetImage(ImagesManegar.down_arrow_icon),
+          ),
+        ),
+      ),
+      iconSize: 24,
+      elevation: 16,
+      style: const TextStyle(
+        color: Colors.deepPurple,
+      ),
+      decoration: const InputDecoration(
+          filled: true,
+          fillColor: Color.fromRGBO(240, 236, 255, 1),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 15,
+            vertical: 0,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          )),
+      onChanged: (String? newValue) {
+        Data.priority_value = newValue!;
+        dataValue = newValue;
+      },
+      validator: (value) {
+        if (value == "choose your priority") return ("choose your priority");
+        return null;
+      },
+      items: list.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+            value: value,
+            child: Row(
+              children: [
+                "choose your priority" == value
+                    ? const Icon(
+                        Icons.flag_outlined,
+                        color: Colors.deepPurple,
+                      )
+                    : Container(),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ));
+      }).toList());
 }

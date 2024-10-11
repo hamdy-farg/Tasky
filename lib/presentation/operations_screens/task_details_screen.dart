@@ -3,10 +3,12 @@ import 'package:flutter/widgets.dart';
 import 'package:tasky/constants/colors/colors.dart';
 import 'package:tasky/constants/daimentions.dart';
 import 'package:tasky/constants/strings.dart';
+import 'package:tasky/constants/variable_data.dart';
 import 'package:tasky/presentation/custom_widgets/bit_text_widget.dart';
 import 'package:tasky/presentation/custom_widgets/description_text_widget.dart';
 import 'package:tasky/presentation/custom_widgets/drop_down_menu.dart';
 import 'package:tasky/presentation/custom_widgets/text_form_field_widget.dart';
+import 'package:tasky/presentation/operations_screens/add_new_task_screen.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
   const TaskDetailsScreen({super.key});
@@ -42,15 +44,15 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   }
 
   Future<void> _selectedData() async {
-    DateTime? _picked = await showDatePicker(
+    DateTime? picked = await showDatePicker(
       context: context,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
       initialDate: DateTime.now(),
     );
-    if (_picked != null) {
+    if (picked != null) {
       setState(() {
-        date_controller!.text = _picked.toString().split(" ")[0];
+        date_controller!.text = picked.toString().split(" ")[0];
         debugPrint(date_controller!.text);
       });
     }
@@ -88,7 +90,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Padding(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 10,
             ),
             child: Column(
@@ -138,22 +140,19 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   ),
                 ),
                 // drop down menu
-                // DropDownMenu(
-                //   have_suffix_icon: false,
-                //   list: state,
-                //   dropdownValue: dropdownValue_state,
-                //   valid_compare_value: dropdownValue_state,
-                //   valid_return_value: "state can not be empty",
-                // ),
+                dropDownButtom(
+                  dataValue: Data.priority_value,
+                  list: Data.priority,
+                  holder: Data.priority_holder,
+                ),
                 SizedBox(
                   height: daimentions!.Height20,
                 ),
-                // DropDownMenu(
-                //   list: priority,
-                //   dropdownValue: dropdownValue_priority,
-                //   valid_compare_value: dropdownValue_priority,
-                //   valid_return_value: "priority must be chosen",
-                // ),
+                dropDownButtom(
+                  dataValue: Data.priority_value,
+                  list: Data.priority,
+                  holder: Data.priority_holder,
+                ),
                 SizedBox(
                   height: daimentions!.Height20,
                 ),

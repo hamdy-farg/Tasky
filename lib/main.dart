@@ -10,6 +10,7 @@ import 'package:tasky/bussiness_logic/operation/todos/cubit/todo_cubit.dart';
 import 'package:tasky/constants/Screens.dart';
 import 'package:tasky/data/api/auth_api/dio_consumer.dart';
 import 'package:tasky/data/repo/operation/auth_repo.dart';
+import 'package:tasky/data/repo/operation/db_auth_repo.dart';
 import 'package:tasky/data/repo/operation/get_repo.dart';
 import 'package:tasky/data/repo/operation/task_repo.dart';
 
@@ -17,7 +18,7 @@ import 'bussiness_logic/operation/add_todo/cubit/add_todo_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await AuthRepo().check();
+  await const DbAuthRepo().check();
   String? isLogin;
   runApp(MyApp(
     app_router: AppRouter(),
@@ -85,7 +86,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          initialRoute: AuthRepo.refresh_token == null
+          initialRoute: DbAuthRepo.refreshToken == null
               ? Screens.entery_screen
               : Screens.home_screen,
           onGenerateRoute: app_router.generateRoute,
