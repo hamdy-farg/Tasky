@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:tasky/bussiness_logic/auth/refresh_token_cubit.dart/refresh_token_cubit.dart';
 import 'package:tasky/data/api/auth_api/api_consumer.dart';
 import 'package:tasky/data/api/auth_api/api_interceptor.dart';
 import 'package:tasky/data/api/auth_api/end_points.dart';
@@ -58,7 +55,6 @@ class DioConsumer extends ApiConsumer {
       );
       return response.data;
     } on DioException catch (e) {
-      log("${e.type}");
       handleDioExceptions(e);
     }
   }
@@ -90,6 +86,7 @@ class DioConsumer extends ApiConsumer {
   }) async {
     dio.interceptors.add(ApiInterceptor(access_token: accessToken));
     try {
+
       final response = await dio.post(
         path,
         data: isFormData ? FormData.fromMap(data) : data,

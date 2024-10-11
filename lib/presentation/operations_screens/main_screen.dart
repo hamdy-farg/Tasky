@@ -61,10 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         builder: (context, state) {
           return state is LogoutLoading
-              ? const Center(
+              ? Center(
                   child: CircularProgressIndicator(),
                 )
               : SafeArea(
+<<<<<<< HEAD
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -72,6 +73,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: EdgeInsets.symmetric(
                             horizontal: daimentions!.Width5),
                         child: Row(
+=======
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+>>>>>>> parent of 9029cf5 (d)
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             big_text(text: "Logo"),
@@ -84,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Screens.profile_screen,
                                     );
                                   },
-                                  icon: const Icon(IconlyLight.profile),
+                                  icon: Icon(IconlyLight.profile),
                                   iconSize: 30,
                                 ),
                                 IconButton(
@@ -114,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: ColorsManeger.light_grey,
                           bold: true,
                         ),
+<<<<<<< HEAD
                       ),
                       SizedBox(
                         height: daimentions!.Height10,
@@ -160,6 +170,56 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ? Colors.white
                                                 : ColorsManeger.light_grey,
                                             fontWeight: FontWeight.bold),
+=======
+                        SizedBox(
+                          height: daimentions!.Height10,
+                        ),
+                        Container(
+                            height: daimentions!.Height40,
+                            child: ListView.builder(
+                              itemCount: task_category.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                if (state is TodosFailure) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text((state as TodosFailure)
+                                          .error_message),
+                                    ),
+                                  );
+                                }
+                                return Container(
+                                  margin: EdgeInsets.only(left: 5),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: selected_item == index
+                                        ? ColorsManeger.purble
+                                        : Color.fromRGBO(240, 236, 255, 1),
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(20),
+                                      onTap: () {
+                                        setState(() {
+                                          selected_item = index;
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 15, vertical: 5),
+                                        margin: EdgeInsets.only(left: 5),
+                                        child: Center(
+                                          child: Text(
+                                            task_category[index],
+                                            style: TextStyle(
+                                                color: selected_item == index
+                                                    ? Colors.white
+                                                    : ColorsManeger.light_grey,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+>>>>>>> parent of 9029cf5 (d)
                                       ),
                                     ),
                                   ),
@@ -197,12 +257,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 }
                               }
                               return state is TodosLoading
-                                  ? const Center(
+                                  ? Center(
                                       child:
                                           CircularProgressIndicator.adaptive(),
                                     )
                                   : state is TodosSuccess
                                       ? Container(
+<<<<<<< HEAD
                                           alignment: Alignment.center,
                                           child: Expanded(
                                             child: ListView.builder(
@@ -232,6 +293,110 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           image: DecorationImage(
                                                               image: FileImage(
                                                                   File(state
+=======
+                                          height: daimentions!.height / 1.40,
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.vertical,
+                                            itemCount:
+                                                state.task_model_list.length,
+                                            itemBuilder: (context, index) {
+                                              return Container(
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      height:
+                                                          daimentions!.height /
+                                                              9.9,
+                                                      width:
+                                                          daimentions!.width /
+                                                              8.7,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        image: DecorationImage(
+                                                            image: FileImage(
+                                                                File(state
+                                                                    .task_model_list[
+                                                                        index]
+                                                                    .image!)),
+                                                            fit: BoxFit.cover),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width:
+                                                          daimentions!.Width5,
+                                                    ),
+                                                    Container(
+                                                      width:
+                                                          daimentions!.width /
+                                                              3.99,
+                                                      height:
+                                                          daimentions!.height /
+                                                              9.9,
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Flexible(
+                                                                  flex: 1,
+                                                                  child:
+                                                                      big_text(
+                                                                    text: state
+                                                                        .task_model_list[
+                                                                            index]
+                                                                        .title
+                                                                        .toString(),
+                                                                    color: Colors
+                                                                        .black,
+                                                                    font_size:
+                                                                        16,
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  padding: EdgeInsets
+                                                                      .symmetric(
+                                                                          horizontal:
+                                                                              7,
+                                                                          vertical:
+                                                                              1),
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              5),
+                                                                      color: ColorsManeger
+                                                                          .light_red_background),
+                                                                  child:
+                                                                      description_text(
+                                                                    text: state
+                                                                        .task_model_list[
+                                                                            index]
+                                                                        .status
+                                                                        .toString(),
+                                                                    color: ColorsManeger
+                                                                        .light_red,
+                                                                    bold: true,
+                                                                  ),
+                                                                ),
+                                                              ]),
+                                                          Row(
+                                                            children: [
+                                                              Flexible(
+                                                                child: Text(
+                                                                  state
+>>>>>>> parent of 9029cf5 (d)
                                                                       .task_model_list[
                                                                           index]
                                                                       .image!)),
@@ -378,6 +543,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           ],
                                                         ),
                                                       ),
+<<<<<<< HEAD
                                                       SizedBox(
                                                         height: 100,
                                                         child: Column(
@@ -405,6 +571,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 );
                                               },
                                             ),
+=======
+                                                    ),
+                                                    Container(
+                                                      height: 100,
+                                                      child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            IconButton(
+                                                                onPressed: () {
+                                                                  Navigator.pushNamed(
+                                                                      context,
+                                                                      Screens
+                                                                          .task_details_screen);
+                                                                },
+                                                                icon: Icon(Icons
+                                                                    .menu_sharp)),
+                                                          ]),
+                                                    )
+                                                  ],
+                                                ),
+                                              );
+                                            },
+>>>>>>> parent of 9029cf5 (d)
                                           ),
                                         )
                                       : Container();
@@ -419,6 +610,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: SingleChildScrollView(
         scrollDirection: Axis.vertical,
+<<<<<<< HEAD
         child: (context.read<AuthCubit>() is LogoutLoading) == false
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -460,6 +652,28 @@ class _HomeScreenState extends State<HomeScreen> {
                       shape: BoxShape.circle,
                     ),
                     child: Material(
+=======
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            // container to work as small floating action button
+            Container(
+              width: daimentions!.height / 15,
+              height: daimentions!.height / 15,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: Material(
+                color: ColorsManeger.light_blue_background,
+                borderRadius: BorderRadius.circular(40),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(40),
+                  onTap: () {},
+                  child: Center(
+                    child: Icon(
+                      Icons.qr_code_outlined,
+                      size: 20,
+>>>>>>> parent of 9029cf5 (d)
                       color: ColorsManeger.purble,
                       borderRadius: BorderRadius.circular(40),
                       child: InkWell(
@@ -477,10 +691,50 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
+<<<<<<< HEAD
                   )
                 ],
               )
             : Container(),
+=======
+                  ),
+                ),
+              ),
+            ),
+
+            // sized box between widgets
+            SizedBox(
+              height: daimentions!.Height10,
+            ),
+
+            // container to work as big flouting action button
+            Container(
+              width: daimentions!.height / 12,
+              height: daimentions!.height / 12,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: Material(
+                color: ColorsManeger.purble,
+                borderRadius: BorderRadius.circular(40),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(40),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(Screens.add_task_screen);
+                  },
+                  child: Center(
+                    child: Icon(
+                      Icons.add,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+>>>>>>> parent of 9029cf5 (d)
       ),
     );
   }
